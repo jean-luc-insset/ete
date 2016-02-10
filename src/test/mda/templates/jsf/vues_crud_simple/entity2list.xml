@@ -1,0 +1,80 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+
+<!--
+    Document   : entity2java.xml
+    Created on : 1 octobre 2010, 18:18
+    Versions   : 1.1 - importations de java.util.Date et java.util.List
+    Author     : jldeleage
+    Description:
+        Modèle de page à générer pour chaque entité du modèle.
+        La page contient une table. Les colonnes de la table sont xcréées
+        en fonction des propriétés de l'entité.
+        La table est paginée
+-->
+
+<ete:root
+        xmlns="http://www.w3.org/1999/xhtml"
+        xmlns:ete="http://www.jldeleage.com/mda/ns/jld.html"
+        method="xhtml" items="Entity"
+        xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+        xmlns:h="http://xmlns.jcp.org/jsf/html"
+        xmlns:f="http://xmlns.jcp.org/jsf/core"
+        href="generated-resources/ete/webapp/admin/€[ name ]/List.xhtml"
+        >
+    <!-- Un "template" peut importer d'autres "templates". Facilite le
+         polymorphisme
+      -->
+    <!--<ete:import href="entity2jsffields.xml"/>-->
+<html>
+    <ui:composition template="/template.xhtml">
+        <ui:define name="title">
+            <h:outputText value="#{bundle.List€[name]Title}"></h:outputText>
+        </ui:define>
+        <ui:define name="body">
+    <h:panelGroup id="messagePanel" layout="block">
+        <h:messages errorStyle="color: red" infoStyle="color: green" layout="table"/>
+    </h:panelGroup>
+
+            <h:form styleClass="jsfcrud_list_form">
+                <h:panelGroup id="messagePanel" layout="block">
+                    <h:messages errorStyle="color: red" infoStyle="color: green" layout="table"/>
+                </h:panelGroup>
+<!--                <h:outputText escape="false" value="#{bundle.List€[name]Empty}" rendered="#{€[ete:initMin(name)]Controller.items.rowCount == 0}"/>-->
+                <h:panelGroup>  <!-- rendered="#{€[ete:initMin(name)]Controller.items.rowCount > 0}"> -->
+                    <h:outputText value="#{€[ete:initMin(name)]Controller.pagination.pageFirstItem + 1}..#{€[ete:initMin(name)]Controller.pagination.pageLastItem + 1}/#{€[ete:initMin(name)]Controller.pagination.itemsCount}"/>&#160;
+                    <h:commandLink action="#{€[ete:initMin(name)]Controller.previous}" value="#{bundle.Previous} #{€[ete:initMin(name)]Controller.pagination.pageSize}" rendered="#{€[ete:initMin(name)]Controller.pagination.hasPreviousPage}"/>&#160;
+                    <h:commandLink action="#{€[ete:initMin(name)]Controller.next}" value="#{bundle.Next} #{€[ete:initMin(name)]Controller.pagination.pageSize}" rendered="#{€[ete:initMin(name)]Controller.pagination.hasNextPage}"/>&#160;
+                    <h:dataTable value="#{€[ete:initMin(name)]Controller.items}" var="item" border="0" cellpadding="2" cellspacing="0" rowClasses="jsfcrud_odd_row,jsfcrud_even_row" rules="all" style="border:solid 1px">
+                        <ete:forEach items="property | association">
+                        <h:column>
+                            <f:facet name="header">
+                                <h:outputText value="#{bundle.List€[../name]Title_€[ name ]}"/>
+                            </f:facet>
+                            <!-- TODO : mettre du polymorphisme pour que l'affichage des associations
+                                 soit plus lisible que la valeur de la clef
+                              -->
+                            <h:outputText value="#{item.€[ name ]}"/>
+                        </h:column>
+                        </ete:forEach>
+                        <h:column>
+                            <f:facet name="header">
+                                <h:outputText value="&#160;"/>
+                            </f:facet>
+                            <h:commandLink action="#{€[ete:initMin(name)]Controller.prepareView}" value="#{bundle.List€[name]ViewLink}"/>
+                            <h:outputText value=" "/>
+                            <h:commandLink action="#{€[ete:initMin(name)]Controller.prepareEdit}" value="#{bundle.List€[name]EditLink}"/>
+                            <h:outputText value=" "/>
+                            <h:commandLink action="#{€[ete:initMin(name)]Controller.destroy}" value="#{bundle.List€[name]DestroyLink}"/>
+                        </h:column>
+                    </h:dataTable>
+                </h:panelGroup>
+                <br />
+                <h:commandLink action="#{€[ete:initMin(name)]Controller.prepareCreate}" value="#{bundle.List€[name]CreateLink}"/>
+                <br />
+                <br />
+                <h:link outcome="/index" value="#{bundle.List€[name]IndexLink}"/>
+            </h:form>
+        </ui:define>
+    </ui:composition>
+</html>
+</ete:root>

@@ -1,0 +1,237 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+
+
+<!--
+    Document   : entity2java.xml
+    Created on : 1 octobre 2010, 18:18
+    Versions   : 1.1 - importations de java.util.Date et java.util.List
+    Author     : jldeleage
+    Description:
+        Modèle de classe à générer pour chaque entité du modèle
+-->
+
+<root xmlns:ete="http://www.jldeleage.com/mda/ns/jld.html"
+        method="text" items="Entity"
+        xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+        xmlns:h="http://xmlns.jcp.org/jsf/html"
+        xmlns:f="http://xmlns.jcp.org/jsf/core"
+        xmlns="http://www.jldeleage.com/mda/ns/jld.html"
+        href="generated-sources/ete/€[ translate(package, '.', '/')]/€[ name ].java"
+        >
+<!--<ete:import href="operation.xml"/>-->
+// Code généré automatiquement par le template entity2java.xml
+package €[ package ];
+
+<for each="association[ type/name != 'Object' ] | composition">import  €[ type/package ].€[ type/name ];
+</for>
+<for each="operation">
+    <if test="type/package">import €[type/package].€[type.name];</if>
+    <for each="param"><if test="type/package">import €[type/package].€[type/name];</if>
+    </for>
+</for>
+import java.io.Serializable;
+import java.util.Date;
+import java.util.List;
+import java.util.Map;
+import javax.annotation.Generated;
+import javax.persistence.CascadeType;
+import javax.persistence.Entity;
+import javax.persistence.FetchType;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
+import javax.persistence.Id;<if test="hasSubclasses">
+import javax.persistence.Inheritance;                      
+</if>import javax.persistence.JoinColumn;
+import javax.persistence.JoinTable;
+import javax.persistence.ManyToMany;
+import javax.persistence.ManyToOne;
+import javax.persistence.MapKey;
+import javax.persistence.NamedQueries;
+import javax.persistence.NamedQuery;
+import javax.persistence.OneToMany;
+import javax.persistence.OneToOne;
+import javax.persistence.Temporal;
+import javax.persistence.Version;
+
+
+@Generated("Ete - auteur : Jean-Luc Deleage jean-luc@insset.fr")
+@Entity<if test="hasSubclasses">
+@Inheritance</if>
+<!-- EclipseLink 2.0 n'aime pas trop les requêtes nommées
+-->@NamedQueries({
+    @NamedQuery(name = "€[ name ].findAll", query = "SELECT a FROM €[ name ] a"),
+    @NamedQuery(name = "€[ name ].findById", query = "SELECT a FROM €[ name ] a WHERE a.id = :id")
+})
+public class €[ name ] <choose>
+    <when test="super-class">extends €[ super-class ]</when>
+    <otherwise>extends Object</otherwise>
+</choose> implements Serializable<if test="interface">, <forEach items="interface" var="i" sep="','">€[ i ]</forEach></if> {
+
+    //========================================================================//
+    //                       C O D E   T E C H N I Q U E                      //
+    //========================================================================//
+
+private    int    __version;
+
+@Version
+public int getVersion() {
+    return __version;
+}
+
+public void setVersion(int inVersion) {
+    __version = inVersion;
+}
+
+<!-- S'il n'y a pas de clef explicite, en ajouter une -->
+<if test="not(attribute[stereotype='id'])">
+
+    public void setId(Long inId) {
+        id  = inId;
+    }
+
+    @Id
+    @GeneratedValue(strategy = GenerationType.AUTO)
+    public Long getId() {
+        return id;
+    }
+
+    @Override
+    public boolean equals(Object autre) {
+        if (getId() == null) {
+            return false;
+        }
+        if (! (autre instanceof €[ name ])) {
+            return false;
+        }
+        €[ name ] autre€[ name ] = (€[ name ])autre;
+        if (autre€[ name ].getId() == null) {
+            return false;
+        }
+        return getId() == autre€[ name ].getId();
+    }
+
+    @Override
+    public int hashCode() {
+        if (getId() == null) {
+            return 0;
+        }
+        return getId().hashCode();
+    }
+    </if>
+
+    //========================================================================//
+    //                           O P E R A T I O N S                          //
+    //========================================================================//
+    //                                                                        //
+    // Ces opérations sont définies dans le modeleur (contrainte "body"), ou  //
+    // bien le modèle ne contient que le résultat (contrainte "result") ou    //
+    // simplement une préassaertion et une postassertion.                     //
+    // Les opérations qui n'ont aucune spécification et qui ne sont pas       //
+    // abstraites génèrent une exception.                                     //
+    //                                                                        //
+    //========================================================================//
+
+<!-- TODO : revoir le moteur de templates pour permettre la modularité de
+     ceux-ci -->
+<!--    <ete:apply-templates select="operation" mode="entity"/>-->
+<!-- TODO : générer une opération pour un attribut dérivé et contraint -->
+
+<!--    <ete:for-each select="operation[result | bodyAsJava | body]">-->
+    <ete:for-each select="operation">
+    public €[ type/name ] €[ name ](<ete:for-each select="param" sep=", ">€[ type/name ] €[ name]</ete:for-each>) {
+        <ete:choose>
+        <ete:when test="result">return €[ result ];</ete:when>
+        <ete:when test="bodyAsJava">€[ bodyAsJava ]</ete:when>
+        <ete:when test="bodyAs">€[ body ]</ete:when>
+        <ete:otherwise>throw new UnsupportedOperationException("Not supported yet.");</ete:otherwise>
+    </ete:choose>
+    }
+    </ete:for-each>
+
+
+ 
+   <ete:if test="not(operation/name='toString')">
+    @Override
+    public String toString() {
+        StringBuilder builder = new StringBuilder();
+        <ete:for-each select="property">
+        builder.append(€[name]);
+        </ete:for-each>
+        return builder.toString();
+    }
+    </ete:if>
+
+    //========================================================================//
+    //              A C C E S S E U R S   E T   M U T A T E U R S             //
+    //========================================================================//
+    //                                                                        //
+    // Les attributs et les associations navigables sont générés.             //
+    // Pour cune association de cardinalité supérieure à 1, les méthodes      //
+    // addXXX et removeXXX sont ajoutées.                                     //
+    //                                                                        //
+    //========================================================================//
+
+
+<!-- TODO : ne pas générer d'attribut pour les propriétés dérivées -->
+
+<forEach items="property" var="att">
+    <if test="type/name = 'java.util.Date' or type/name='date' or type/name='Date'">@Temporal(javax.persistence.TemporalType.DATE)</if>
+    public €[ type/name ] get€[ ete:initMaj(name) ]() {
+        return €[name];
+    }
+
+    public void set€[ ete:initMaj(name) ](€[ type/name ] €[name]) {
+        this.€[name] = €[name];
+    }</forEach>
+
+<for each="association[type/name] | composition">
+    @€[both-cardinalities]<if test="local-name() = 'composition'">(cascade = CascadeType.ALL, fetch = FetchType.EAGER )</if><if test="qualifier">
+    @MapKey(name="€[qualifier/key]")</if>
+    public <choose>
+        <when test="qualifier">Map&lt;€[qualifier/type/name], €[type/name]&gt;</when>
+        <when test="cardinality='*'">List&lt;€[ type/name ]&gt;</when>
+        <otherwise>€[ type/name ]</otherwise>
+    </choose> get€[ ete:initMaj(name) ]() {
+        return €[name];
+    }
+
+    public void set€[ ete:initMaj(name) ](<choose><when test="qualifier">Map&lt;€[qualifier/type/name], €[type/name]&gt;</when><when test="cardinality='*'">List&lt;€[ type/name ]&gt;</when><otherwise>€[ type/name ]</otherwise></choose> €[name]) {
+        this.€[name] = €[name];
+    }<if test="cardinality='*'"><!-- association "n" -->
+
+    public void add€[ ete:initMaj(name) ](€[ type/name ] €[name]) {
+        <choose>
+        <when test="qualifier">this.€[name].put(€[name].get€[ete:initMaj(qualifier/type/name)](), €[name]);</when>
+        <otherwise>this.€[name].add(€[name]);</otherwise>
+    </choose>
+    }
+
+    public void remove€[ ete:initMaj(name) ](€[ type/name ] €[name]) {
+    <choose>
+        <when test="qualifier">this.€[name].remove(€[name].get€[ete:initMaj(qualifier/type/name)]());</when>
+        <otherwise>this.€[name].remove(€[name]);</otherwise>
+    </choose>
+    }
+    </if></for>
+
+
+    //========================================================================//
+
+
+<if test="not(attribute[stereotype='id'])">
+    private Long  id;
+</if>
+
+
+<!-- TODO : ne pas générer d'attribut pour les propriétés dérivées -->
+
+<forEach items="property" var="att">
+    private €[ type/name ] €[ name ];</forEach>
+
+<forEach items="association | composition" var="ass">
+    private <choose><when test="qualifier">Map&lt;€[qualifier/type/name],€[type/name]&gt;</when><when test="cardinality='*'">List&lt;€[ type/name ]&gt;</when><otherwise>€[ type/name ]</otherwise></choose> €[ name ];</forEach>
+
+    
+}  // €[ name ]
+
+</root>

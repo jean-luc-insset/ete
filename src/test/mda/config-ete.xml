@@ -1,0 +1,70 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+
+<mda>
+    <!--
+        Un projet peut être construit en suivant plusieurs transformations.
+        Une tranformation porte sur un modele et est un "pipeline" constitué
+        de "pas". Chaque "pas" transforme le modèle qu'il reçoit et renvoie
+        le résultat de cette tranformation.
+        Certains "pas" particuliers renvoient le modèle qu'ils reçoivent car ils
+        produisent un effet de bord comme par exemple la génération de fichiers
+        (i.e. "pas" de type "template") ou l'affichage du modèle qu'elles
+        traitent ("pas" de type "dump").
+        Il y a toujours un premier "pas" implicite qui ajoute les informations
+        conformes au méta-modèle "ete".
+        TODO : permettre le parametrage de ce premier pas initial.
+        TODO : mettre en place un système de dépendances pour faciliter
+           l'écriture. L'exécution d'un template déclenche l'exécution de
+           tous les templates dont il dépend
+      -->
+    <transformation-set>
+        <!--<modele>OrigamiAirLines.xml</modele>-->
+        <!--<modele>LeagueOfLegends.xml</modele>-->
+        <modele>MMORPG.xml</modele>
+<!--        <modele>modele2.xml</modele>-->
+        <!--<modele>SansTitre2.xml</modele>-->
+        <pas>
+            <!-- Afficher le modèle tel qu'il a été lu. Ce n'est pas le modèle
+                 tel qu'il a été exporté en XMI mais un modèle enrichi de
+                 redondances facilitant l'exploitation.
+              -->
+            <!--<dump      fichier="target/dump.xml"/>-->
+            <!-- Le résultat d'un pas de type "template" est le modèle reçu en
+                 entrée. Typiquement, un tel pas produit des fichiers. Le
+                 nombre de fichiers produits par un pas dépend de la nature du
+                 pas et du modèle.
+                 En effet, un template peut s'appliquer au modèle lui-même,
+                 dans ce cas il produit exactement un fichier.
+                 Le template peut s'appliquer à un certain types d'items du
+                 modèle. Dans ce cas, il produit un fichier par instance de
+                 ce type d'items présente dans le modèle.
+              -->
+            <!-- JSF -->
+            <!-- Page d'accueil, descripteur de déploiement, configuration JSF -->
+            <!--<module nom="templates/jsf/jsf-module-config.xml"/>-->
+
+            <!-- Le template suivant a besoin des templates JPA ainsi
+                 que de JsfUtil et PaginationHelper -->
+            <!--<template  template="templates/jsf/Entity2JsfController.xml"/>-->
+            <!--<template template="templates/jpa/entity2java.xml"/>-->
+             <!-- Internationalisation --> 
+            <!--<template  template="templates/jsf/vues_crud_simple/model2bundle.xml"/>-->
+
+            <template template="templates/jpa/entity2java.xml"/>
+            <xslt     feuille="transformations/collationInterfaces.xsl"/>
+            <dump     fichier="target/dump2.xml"/>
+
+            <!-- JPA -->
+            <!--<module nom="templates/jsf-jpa-module-config.xml"/>-->
+
+            <!-- Pages correspondant aux scénarios -->
+<!--            <modifyXml template="templates/jsf/scenarios/actors2web.xml"
+                       file="target/generated-resources/ete/webapp/WEB-INF/web.xml"/>-->
+            <!--<template  template="templates/jsf/scenarios/boundary2page.xml"/>-->
+            <!--<template  template="templates/jsf/scenarios/component2jsf.xml"/>-->
+            <!--<template  template="templates/jsf/scenarios/datatable2jsf.xml"/>-->
+            <!--<template  template="templates/jsf/scenarios/form2jsf.xml"/>-->
+        </pas>
+    </transformation-set>
+</mda>

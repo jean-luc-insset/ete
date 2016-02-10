@@ -1,0 +1,240 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+
+
+<!--
+    Document   : entity2java.xml
+    Created on : 1 octobre 2010, 18:18
+    Versions   : 1.1 - importations de java.util.Date et java.util.List
+    Author     : jldeleage
+    Description:
+        Modèle de classe à générer pour chaque entité du modèle
+-->
+
+<root xmlns:ete="http://www.jldeleage.com/mda/ns/jld.html"
+        method="text" items="Entity"
+        xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+        xmlns:h="http://xmlns.jcp.org/jsf/html"
+        xmlns:f="http://xmlns.jcp.org/jsf/core"
+        xmlns="http://www.jldeleage.com/mda/ns/jld.html"
+        href="generated-sources/ete/€[ translate(package, '.', '/')]/€[ name ].java"
+        >
+<!--<ete:import href="operation.xml"/>-->
+// Code généré automatiquement par le template entity2java.xml
+package €[ package ];
+
+<!--<forEach items="imports" var="i">import €[ i ];
+</forEach>-->
+<!--<for each="i in imports" >import €[ i ];
+</for>-->
+<!--<for each="association">import €[ ete:package(type, /) ].€[ type ];
+</for>-->
+    <for each="association[ type.name != 'Object' ]"><if test="€[ type.package ]">import  €[ type.package ].€[ type.name ];</if>
+</for>
+import java.io.Serializable;
+import java.util.Date;
+import java.util.List;
+import javax.annotation.Generated;
+import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
+import javax.persistence.Id;<if test="hasSubclasses">
+import javax.persistence.Inheritance;                      
+</if>import javax.persistence.JoinColumn;
+import javax.persistence.JoinTable;
+import javax.persistence.ManyToMany;
+import javax.persistence.ManyToOne;
+import javax.persistence.NamedQueries;
+import javax.persistence.NamedQuery;
+import javax.persistence.OneToMany;
+import javax.persistence.Temporal;
+import javax.persistence.Version;
+
+
+@Generated("Ete - auteur : Jean-Luc Deleage jean-luc@insset.fr")
+@Entity<if test="hasSubclasses">
+@Inheritance</if><!-- EclipseLink 2.0 n'aime pas trop les requêtes nommées
+-->@NamedQueries({
+    @NamedQuery(name = "€[ name ].findAll", query = "SELECT a FROM €[ name ] a"),
+    @NamedQuery(name = "€[ name ].findById", query = "SELECT a FROM €[ name ] a WHERE a.id = :id")
+})
+public class €[ name ] <if test="super-class">extends €[ super-class ]</if> implements Serializable<if test="interface">, <forEach items="interface" var="i" sep="','">€[ i ]</forEach></if> {
+
+    //========================================================================//
+    //                       C O D E   T E C H N I Q U E                      //
+    //========================================================================//
+
+private    int    __version;
+
+@Version
+public int getVersion() {
+    return __version;
+}
+
+public void setVersion(int inVersion) {
+    __version = inVersion;
+}
+
+<!-- S'il n'y a pas de clef explicite, en ajouter une -->
+<if test="not(attribute[stereotype='id'])">
+
+    public void setId(Long inId) {
+        id  = inId;
+    }
+
+    @Id
+    @GeneratedValue(strategy = GenerationType.AUTO)
+    public Long getId() {
+        return id;
+    }
+
+    @Override
+    public boolean equals(Object autre) {
+        if (getId() == null) {
+            return false;
+        }
+        if (! (autre instanceof €[ name ])) {
+            return false;
+        }
+        €[ name ] autre€[ name ] = (€[ name ])autre;
+        if (autre€[ name ].getId() == null) {
+            return false;
+        }
+        return getId() == autre€[ name ].getId();
+    }
+
+    @Override
+    public int hashCode() {
+        if (getId() == null) {
+            return 0;
+        }
+        return getId().hashCode();
+    }
+    </if>
+
+    //========================================================================//
+    //                           O P E R A T I O N S                          //
+    //========================================================================//
+    //                                                                        //
+    // Ces opérations sont définies dans le modeleur (contrainte "body"), ou  //
+    // bien le modèle ne contient que le résultat (contrainte "result") ou    //
+    // simplement une préassaertion et une postassertion.                     //
+    // Les opérations qui n'ont aucune spécification et qui ne sont pas       //
+    // abstraites génèrent une exception.                                     //
+    //                                                                        //
+    //========================================================================//
+
+<!-- TODO : revoir le moteur de templates pour permettre la modularité de
+     ceux-ci -->
+<!--    <ete:apply-templates select="operation" mode="entity"/>-->
+<!-- TODO : générer une opération pour un attribut dérivé et contraint -->
+
+<!--    <ete:for-each select="operation[result | bodyAsJava | body]">-->
+    <ete:for-each select="operation">
+    public €[ type.name ] €[ name ](<ete:for-each select="param" sep="', '">€[ type.name ] €[ name]</ete:for-each>) {
+        <ete:choose>
+        <ete:when test="result">return €[ result ];</ete:when>
+        <ete:when test="bodyAsJava">€[ bodyAsJava ]</ete:when>
+        <ete:when test="bodyAs">€[ body ]</ete:when>
+        <ete:otherwise>throw new UnsupportedOperationException("Not supported yet.");</ete:otherwise>
+    </ete:choose>
+    }
+    </ete:for-each>
+
+
+
+    //========================================================================//
+    //              A C C E S S E U R S   E T   M U T A T E U R S             //
+    //========================================================================//
+    //                                                                        //
+    // Les attributs et les associations navigables sont générés.             //
+    // Pour cune association de cardinalité supérieure à 1, les méthodes      //
+    // addXXX et removeXXX sont ajoutées.                                     //
+    //                                                                        //
+    //========================================================================//
+
+
+<!-- TODO : ne pas générer d'attribut pour les propriétés dérivées -->
+
+<forEach items="property" var="att">
+    <if test="type.name = 'java.util.Date' or type.name='date' or type.name='Date'">@Temporal(javax.persistence.TemporalType.DATE)</if>
+    public €[ ete:type(type) ] get€[ ete:initMaj(name) ]() {
+        return €[name];
+    }
+
+    public void set€[ ete:initMaj(name) ](€[ ete:type(type)] €[name]) {
+        this.€[name] = €[name];
+    }</forEach>
+
+
+<!--
+    Exemple extrait de la documentation de l'API JavaEE 6
+
+    // In Customer class:
+
+    @ManyToMany
+    @JoinTable(name="CUST_PHONE",
+        joinColumns=
+            @JoinColumn(name="CUST_ID", referencedColumnName="ID"),
+        inverseJoinColumns=
+            @JoinColumn(name="PHONE_ID", referencedColumnName="ID")
+        )
+    public Set<PhoneNumber> getPhones() { return phones; }
+
+    // In PhoneNumberClass:
+
+    @ManyToMany(mappedBy="phones")
+    public Set<Customer> getCustomers() { return customers; }
+ 
+  -->
+
+<for each="association[type.name]">
+    <ete:choose>
+    <ete:when test="cardinality='*'"><ete:choose>
+        <ete:when test="reverse-cardinality='*'">@ManyToMany<ete:choose><ete:when 
+            test="mappedBy">(mappedBy="€[ mappedBy ]")</ete:when>
+            <ete:otherwise>
+    @JoinTable(name="€[name]_€[reverse]",
+                joinColumns=
+                    @JoinColumn(name="€[ reverse ]", referencedColumnName="ID"),
+                inverseJoinColumns=
+                    @JoinColumn(name="€[ name ]", referencedColumnName="ID")
+                )</ete:otherwise>
+        </ete:choose></ete:when>
+        <ete:otherwise>@OneToMany<ete:if 
+            test="mappedBy">(mappedBy="€[ mappedBy ]")</ete:if></ete:otherwise>
+        </ete:choose></ete:when><ete:otherwise>@ManyToOne</ete:otherwise>
+    </ete:choose>
+    public <choose><when test="cardinality='*'">List&lt;€[ type.name ]&gt;</when><otherwise>€[ type.name ]</otherwise></choose> get€[ ete:initMaj(name) ]() {
+        return €[name];
+    }
+
+    public void set€[ ete:initMaj(name) ](<choose><when test="cardinality='*'">List&lt;€[ type.name ]&gt;</when><otherwise>€[ type.name ]</otherwise></choose> €[name]) {
+        this.€[name] = €[name];
+    }<if test="cardinality='*'"><!-- association "n" -->
+
+    public void add€[ ete:initMaj(name) ](€[ type.name ] €[name]) {
+        this.€[name].add(€[name]);
+    }
+
+    public void remove€[ ete:initMaj(name) ](€[ type.name ] €[name]) {
+        this.€[name].remove(€[name]);
+    }
+    </if></for>
+
+
+    //========================================================================//
+
+
+<if test="not(attribute[stereotype='id'])">
+    private Long  id;
+</if>
+
+<forEach items="association" var="ass">
+    private <choose><when test="cardinality='*'">List&lt;€[ type.name ]&gt;</when><otherwise>€[ type.name ]</otherwise></choose> €[ name ];</forEach>
+
+<forEach items="property" var="att">
+    private €[ ete:type(type) ] €[ name ];</forEach>
+
+}  // €[ name ]
+
+</root>

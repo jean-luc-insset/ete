@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+To change this license header, choose License Headers in Project Properties.
+To change this template file, choose Tools | Templates
+and open the template in the editor.
+-->
+
+
+<transformation-set>
+    <pas>
+        <template  template="templates/jsf/model2index.xml"/>
+        <template  template="templates/jsf/model2web.xml"/>
+        <template  template="templates/jsf/JsfUtil.xml"/>
+        <template  template="templates/jsf/model2faces.xml"/>
+         <!-- Pages JSF de CRUD -->
+        <template  template="templates/jsf/vues_crud_simple/entity2create.xml"/>
+        <template  template="templates/jsf/vues_crud_simple/entity2edit.xml"/>
+        <template  template="templates/jsf/vues_crud_simple/entity2list.xml"/>
+        <template  template="templates/jsf/PaginationHelper.xml"/>
+        <template  template="templates/jsf/vues_crud_simple/entity2view.xml"/>
+    </pas>
+</transformation-set>

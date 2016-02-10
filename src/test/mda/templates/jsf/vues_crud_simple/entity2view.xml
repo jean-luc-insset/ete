@@ -1,0 +1,49 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+
+<!--
+    Document   : entity2java.xml
+    Created on : 1 octobre 2010, 18:18
+    Versions   : 1.1 - importations de java.util.Date et java.util.List
+    Author     : jldeleage
+    Description:
+        Modèle de classe à générer pour chaque entité du modèle
+-->
+
+<ete:root
+        xmlns:ete="http://www.jldeleage.com/mda/ns/jld.html"
+        method="xhtml"
+        items="Entity"
+        xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+        xmlns:h="http://xmlns.jcp.org/jsf/html"
+        xmlns:f="http://xmlns.jcp.org/jsf/core"
+        xmlns="http://www.w3.org/1999/xhtml"
+        href="generated-resources/ete/webapp/admin/€[ name ]/View.xhtml"
+        >
+    <ui:composition template="/template.xhtml">
+        <ui:define name="title">
+            <h:outputText value="#{bundle.View€[name]Title}"></h:outputText>
+        </ui:define>
+
+        <ui:define name="body">
+            <h:panelGroup id="messagePanel" layout="block">
+                <h:messages errorStyle="color: red" infoStyle="color: green" layout="table"/>
+            </h:panelGroup>
+
+            <h:form>
+                <h:panelGrid columns="2">
+                    <ete:forEach select="property | association" var="att">
+                        <h:outputLabel value="#{bundle.View€[../name]Label_€[name]}" for="€[ name ]" />
+                        <h:outputText id="€[name]" value="#{ €[ ete:initMin(../name)]Controller.selected.€[name]}" />
+                    </ete:forEach>
+                </h:panelGrid>
+                <br/>
+                <br/>
+                <h:commandLink action="#{€[ete:initMin(name)]Controller.prepareList}" value="#{bundle.Create€[name]ShowAllLink}" immediate="true"/>
+                <br />
+                <br />
+                <h:link outcome="/index" value="#{bundle.Create€[name]IndexLink}"/>
+            </h:form>
+        </ui:define>
+    </ui:composition>
+
+</ete:root>

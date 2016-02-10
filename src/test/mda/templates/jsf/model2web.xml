@@ -1,0 +1,107 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+To change this license header, choose License Headers in Project Properties.
+To change this template file, choose Tools | Templates
+and open the template in the editor.
+-->
+
+
+<root xmlns:ete="http://www.jldeleage.com/mda/ns/jld.html"
+        method="xml"
+        xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+        xmlns:h="http://xmlns.jcp.org/jsf/html"
+        xmlns:f="http://xmlns.jcp.org/jsf/core"
+        xmlns="http://www.jldeleage.com/mda/ns/jld.html"
+        href="generated-resources/ete/webapp/WEB-INF/web.xml"
+        >
+
+<web-app version="3.0" xmlns="http://java.sun.com/xml/ns/javaee" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://java.sun.com/xml/ns/javaee http://java.sun.com/xml/ns/javaee/web-app_3_0.xsd">
+    <display-name>essai-plugin-ete-webapp</display-name>
+
+    <context-param>
+        <param-name>javax.faces.PROJECT_STAGE</param-name>
+        <param-value>Development</param-value>
+    </context-param>
+    <context-param>
+        <param-name>javax.faces.STATE_SAVING_METHOD</param-name>
+        <param-value>client</param-value>
+        <!--<param-value>server</param-value>-->
+    </context-param>
+<!--    <filter>
+        <filter-name>springSecurityFilterChain</filter-name>
+        <filter-class>org.springframework.web.filter.DelegatingFilterProxy</filter-class>
+    </filter>
+    <filter-mapping>
+        <filter-name>springSecurityFilterChain</filter-name>
+        <url-pattern>/*</url-pattern>
+    </filter-mapping>-->
+
+    <servlet>
+        <servlet-name>CheckLogin</servlet-name>
+        <servlet-class>fr.insset.jeanluc.ete.security.CheckLogin</servlet-class>
+    </servlet>
+    <servlet-mapping>
+        <servlet-name>CheckLogin</servlet-name>
+        <url-pattern>/checkLogin</url-pattern>
+    </servlet-mapping>
+
+    <servlet>
+        <servlet-name>Push Servlet</servlet-name>
+        <servlet-class>org.primefaces.push.PushServlet</servlet-class>
+        <async-supported>true</async-supported>
+    </servlet>
+    <servlet-mapping>
+        <servlet-name>Push Servlet</servlet-name>
+        <url-pattern>/primepush/*</url-pattern>
+    </servlet-mapping>
+
+    <session-config>
+        <session-timeout>
+            30
+        </session-timeout>
+    </session-config>
+
+    <welcome-file-list>
+        <!--<welcome-file>faces/index.html</welcome-file>-->
+        <!--<welcome-file>faces/index.jsp</welcome-file>-->
+        <welcome-file>faces/index.xhtml</welcome-file>
+    </welcome-file-list>
+
+    <login-config>
+        <auth-method>FORM</auth-method>
+        <realm-name>secu</realm-name>
+        <form-login-config>
+            <form-login-page>/faces/login.xhtml</form-login-page>
+            <form-error-page>/faces/accesRefuse.xhtml</form-error-page>
+        </form-login-config>
+    </login-config>
+
+<!--    <ete:forEach items="Actor">
+    <security-constraint>
+        <display-name>Pages €[ name ]</display-name>
+        <web-resource-collection>
+            <web-resource-name>€[name]</web-resource-name>
+            <description>Pages dont l'accès est réservé au rôle "€[ name ]"</description>
+            <url-pattern>/faces/€[ete:initMin(name)]/*</url-pattern>
+        </web-resource-collection>
+        <auth-constraint>
+            <description></description>
+            <role-name>€[name]</role-name>
+        </auth-constraint>
+    </security-constraint>
+    </ete:forEach>
+
+
+    <ete:forEach items="Actor">
+    <security-role>
+        <description/>
+        <role-name>€[ name ]</role-name>
+    </security-role>
+    </ete:forEach>-->
+    <error-page>
+        <error-code>404</error-code>
+        <location>/erreur.jsp</location>
+    </error-page>
+</web-app>
+
+</root>

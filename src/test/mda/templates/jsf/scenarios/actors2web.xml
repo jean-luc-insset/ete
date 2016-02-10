@@ -1,0 +1,79 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+
+<!--
+    Document   : entity2java.xml
+    Created on : 1 octobre 2010, 18:18
+    Versions   : 1.1 - importations de java.util.Date et java.util.List
+    Author     : jldeleage
+    Description:
+        Ajoute dans web.xml les contraintes de contrôle d'accès liées aux
+        acteurs.
+        Il faut invoquer ce template uniquement si un fichier web.xml existe
+        déjà, soit dans les sources standard, soit généré par le plugin mda
+        ou un autre plugin.
+-->
+
+<ete:root xmlns:ete="http://www.jldeleage.com/mda/ns/jld.html"
+      xmlns:uml='http://www.omg.org/spec/UML/20131001'
+      xmlns:xmi='http://www.omg.org/spec/XMI/20131001'
+      xmlns:eteMD='http://www.magicdraw.com/schemas/ete.xmi'
+      xmlns:Validation_Profile='http://www.magicdraw.com/schemas/Validation_Profile.xmi'
+      xmlns:DSL_Customization='http://www.magicdraw.com/schemas/DSL_Customization.xmi'
+      xmlns:MagicDraw_Profile='http://www.omg.org/spec/UML/20131001/MagicDrawProfile'
+      xmlns:StandardProfile='http://www.omg.org/spec/UML/20131001/StandardProfile'
+      xmlns:javaee="http://xmlns.jcp.org/xml/ns/javaee"
+      xmlns="http://xmlns.jcp.org/xml/ns/javaee"
+      >
+
+    <ete:namespace>
+        <ete:prefix>javaee</ete:prefix>
+        <ete:uri>http://xmlns.jcp.org/xml/ns/javaee</ete:uri>
+    </ete:namespace>
+
+    <ete:add>
+        <ete:where>javaee:web-app</ete:where>
+        <ete:what>
+        <security-constraint>
+            <display-name>administration generale</display-name>
+            <web-resource-collection>
+                <web-resource-name>back office</web-resource-name>
+                <description>Pages d'administration CRUD</description>
+                <url-pattern>/faces/admin/*</url-pattern>
+            </web-resource-collection>
+            <auth-constraint>
+                <description>Rôle "admin" standard</description>
+                <role-name>admin</role-name>
+            </auth-constraint>
+        </security-constraint>
+        <ete:for-each select="$modele/Actor">
+            <security-constraint>
+                <display-name>€[name]</display-name>
+                <web-resource-collection>
+                    <web-resource-name>back office</web-resource-name>
+                    <description>Pages à accès réservé au rôle €[ name ]</description>
+                    <url-pattern>/faces/€[name]/*</url-pattern>
+                </web-resource-collection>
+                <auth-constraint>
+                    <description>Rôle accepté pour ces pages</description>
+                    <role-name>€[name]</role-name>
+                </auth-constraint>
+            </security-constraint>
+        </ete:for-each>
+        <login-config>
+            <auth-method>FORM</auth-method>
+            <realm-name>secu</realm-name>
+            <form-login-config>
+                <form-login-page>login.xhtml</form-login-page>
+                <form-error-page>accesRefuse.xhtml</form-error-page>
+            </form-login-config>
+        </login-config>
+        <ete:for-each select="$modele/Actor">
+            <security-role>
+                <description>Role de €[name]</description>
+                <role-name>€[ name ]</role-name>
+            </security-role>
+        </ete:for-each>
+        </ete:what>
+    </ete:add>
+
+</ete:root>

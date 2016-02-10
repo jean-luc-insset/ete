@@ -1,0 +1,54 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+
+<!--
+    Document   : entity2java.xml
+    Created on : 1 octobre 2010, 18:18
+    Versions   : 1.1 - importations de java.util.Date et java.util.List
+    Author     : jldeleage
+    Description:
+        Modèle de page à générer pour chaque entité du modèle.
+        La page permet de modifier les propriétés d'une instance.
+-->
+
+<ete:root
+        xmlns:ete="http://www.jldeleage.com/mda/ns/jld.html"
+        method="xhtml"
+        items="Entity"
+        xmlns="http://www.w3.org/1999/xhtml"
+        xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+        xmlns:h="http://xmlns.jcp.org/jsf/html"
+        xmlns:f="http://xmlns.jcp.org/jsf/core"
+        href="generated-resources/ete/webapp/admin/€[ name ]/Edit.xhtml"
+        >
+    <ete:import href="booleanfield.xml"/>
+    <ete:import href="association2selectOne.xml"/>
+    <ete:import href="association2selectMany.xml"/>
+    <ete:import href="defaultfield.xml"/>
+    <ete:import href="dateField.xml"/>
+    <ui:composition template="/template.xhtml">
+        <ui:define name="title">
+            <h:outputText value="#{bundle.Create€[name]Title}"></h:outputText>
+        </ui:define>
+        <ui:define name="body">
+    <h:panelGroup id="messagePanel" layout="block">
+        <h:messages errorStyle="color: red" infoStyle="color: green" layout="table"/>
+    </h:panelGroup>
+    <h:form>
+        <h:inputHidden value="#{ €[ete:initMin(name)]Controller.selected.id}"/>
+    <h:panelGrid columns="2">
+        <!-- Polymorphisme sur le traitement des differents champs -->
+        <ete:apply select="property | association" mode="field"/>
+        <!-- Il faut aussi ajouter l'identifiant -->
+    </h:panelGrid>        <br/>
+        <h:commandButton action="#{ €[ete:initMin(name)]Controller.update  }" value="#{bundle.Edit€[ name ]SaveLink}"/>
+                <br/>
+                <br/>
+                <h:commandLink action="#{€[ete:initMin(name)]Controller.prepareList}" value="#{bundle.Create€[name]ShowAllLink}" immediate="true"/>
+                <br />
+                <br />
+                <h:link outcome="/index" value="#{bundle.Create€[name]IndexLink}"/>
+    </h:form>
+        </ui:define>
+    </ui:composition>
+
+</ete:root>

@@ -1,0 +1,253 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+To change this license header, choose License Headers in Project Properties.
+To change this template file, choose Tools | Templates
+and open the template in the editor.
+-->
+
+
+<root xmlns:ete="http://www.jldeleage.com/mda/ns/jld.html"
+        method="text" items="Entity"
+        xmlns="http://www.jldeleage.com/mda/ns/jld.html"
+        href="generated-sources/ete/€[ translate(package, '.', '/')]/jsf/€[ name ]Controller.java"
+        >
+package €[package].jsf;
+
+<for each="association[ type/name != 'Object' ]">import  €[ type/package ].€[ type/name ];
+</for>
+
+import €[package].€[name];
+import fr.insset.ete.jsf.util.JsfUtil;
+import fr.insset.ete.jsf.util.PaginationHelper;
+import €[package].jpa.€[name]DAO;
+
+import java.io.Serializable;
+import java.util.ResourceBundle;
+import javax.ejb.EJB;
+import javax.inject.Named;
+import javax.enterprise.context.SessionScoped;
+import javax.faces.component.UIComponent;
+import javax.faces.context.FacesContext;
+import javax.faces.convert.Converter;
+import javax.faces.convert.FacesConverter;
+import javax.faces.model.DataModel;
+import javax.faces.model.ListDataModel;
+import javax.faces.model.SelectItem;
+
+@Named("€[ete:initMin(name)]Controller")
+@SessionScoped
+public class €[name]Controller implements Serializable {
+
+    private €[name] current;
+    private DataModel items = null;
+    @EJB
+    private €[name]DAO ejbDAO;
+    private PaginationHelper pagination;
+    private int selectedItemIndex;
+
+    public €[name]Controller() {
+    }
+
+    public €[name] getSelected() {
+        if (current == null) {
+            current = new €[name]();
+            selectedItemIndex = -1;
+        }
+        return current;
+    }
+
+    private €[name]DAO getDAO() {
+        return ejbDAO;
+    }
+
+    public PaginationHelper getPagination() {
+        if (pagination == null) {
+            pagination = new PaginationHelper(10) {
+
+                @Override
+                public int getItemsCount() {
+                    return getDAO().count();
+                }
+
+                @Override
+                public DataModel createPageDataModel() {
+                    return new ListDataModel(getDAO().findRange(new int[]{getPageFirstItem(), getPageFirstItem() + getPageSize()}));
+                }
+            };
+        }
+        return pagination;
+    }
+
+    public String prepareList() {
+        recreateModel();
+        return "List";
+    }
+
+    public String prepareView() {
+        current = (€[name]) getItems().getRowData();
+        selectedItemIndex = pagination.getPageFirstItem() + getItems().getRowIndex();
+        return "View";
+    }
+
+    public String prepareCreate() {
+        current = new €[name]();
+        selectedItemIndex = -1;
+        return "Create";
+    }
+
+    public String create() {
+        try {
+            getDAO().create(current);
+            JsfUtil.addSuccessMessage(ResourceBundle.getBundle("/Bundle").getString("€[name]Created"));
+            return prepareCreate();
+        } catch (Exception e) {
+            JsfUtil.addErrorMessage(e, ResourceBundle.getBundle("/Bundle").getString("PersistenceErrorOccured"));
+            return null;
+        }
+    }
+
+    public String prepareEdit() {
+        current = (€[name]) getItems().getRowData();
+        selectedItemIndex = pagination.getPageFirstItem() + getItems().getRowIndex();
+        return "Edit";
+    }
+
+    public String update() {
+        try {
+            getDAO().edit(current);
+            JsfUtil.addSuccessMessage(ResourceBundle.getBundle("/Bundle").getString("€[name]Updated"));
+            return "View";
+        } catch (Exception e) {
+            JsfUtil.addErrorMessage(e, ResourceBundle.getBundle("/Bundle").getString("PersistenceErrorOccured"));
+            return null;
+        }
+    }
+
+    public String destroy() {
+        current = (€[name]) getItems().getRowData();
+        selectedItemIndex = pagination.getPageFirstItem() + getItems().getRowIndex();
+        performDestroy();
+        recreatePagination();
+        recreateModel();
+        return "List";
+    }
+
+    public String destroyAndView() {
+        performDestroy();
+        recreateModel();
+        updateCurrentItem();
+        if (selectedItemIndex >= 0) {
+            return "View";
+        } else {
+            // all items were removed - go back to list
+            recreateModel();
+            return "List";
+        }
+    }
+
+    private void performDestroy() {
+        try {
+            getDAO().remove(current);
+            JsfUtil.addSuccessMessage(ResourceBundle.getBundle("/Bundle").getString("€[name]Deleted"));
+        } catch (Exception e) {
+            JsfUtil.addErrorMessage(e, ResourceBundle.getBundle("/Bundle").getString("PersistenceErrorOccured"));
+        }
+    }
+
+    private void updateCurrentItem() {
+        int count = getDAO().count();
+        if (selectedItemIndex >= count) {
+            // selected index cannot be bigger than number of items:
+            selectedItemIndex = count - 1;
+            // go to previous page if last page disappeared:
+            if (pagination.getPageFirstItem() >= count) {
+                pagination.previousPage();
+            }
+        }
+        if (selectedItemIndex >= 0) {
+            current = getDAO().findRange(new int[]{selectedItemIndex, selectedItemIndex + 1}).get(0);
+        }
+    }
+
+    public DataModel getItems() {
+        if (items == null) {
+            items = getPagination().createPageDataModel();
+        }
+        return items;
+    }
+
+    private void recreateModel() {
+        items = null;
+    }
+
+    private void recreatePagination() {
+        pagination = null;
+    }
+
+    public String next() {
+        getPagination().nextPage();
+        recreateModel();
+        return "List";
+    }
+
+    public String previous() {
+        getPagination().previousPage();
+        recreateModel();
+        return "List";
+    }
+
+    public SelectItem[] getItemsAvailableSelectMany() {
+        return JsfUtil.getSelectItems(ejbDAO.findAll(), false);
+    }
+
+    public SelectItem[] getItemsAvailableSelectOne() {
+        return JsfUtil.getSelectItems(ejbDAO.findAll(), true);
+    }
+
+    public €[name] get€[name](java.lang.Long id) {
+        return ejbDAO.find(id);
+    }
+
+    @FacesConverter(forClass = €[name].class)
+    public static class €[name]ControllerConverter implements Converter {
+
+        @Override
+        public Object getAsObject(FacesContext facesContext, UIComponent component, String value) {
+            if (value == null || value.length() == 0) {
+                return null;
+            }
+            €[name]Controller controller = (€[name]Controller) facesContext.getApplication().getELResolver().
+                    getValue(facesContext.getELContext(), null, "auteurController");
+            return controller.get€[name](getKey(value));
+        }
+
+        java.lang.Long getKey(String value) {
+            java.lang.Long key;
+            key = Long.valueOf(value);
+            return key;
+        }
+
+        String getStringKey(java.lang.Long value) {
+            StringBuilder sb = new StringBuilder();
+            sb.append(value);
+            return sb.toString();
+        }
+
+        @Override
+        public String getAsString(FacesContext facesContext, UIComponent component, Object object) {
+            if (object == null) {
+                return null;
+            }
+            if (object instanceof €[name]) {
+                €[name] o = (€[name]) object;
+                return getStringKey(o.getId());
+            } else {
+                throw new IllegalArgumentException("object " + object + " is of type " + object.getClass().getName() + "; expected type: " + €[name].class.getName());
+            }
+        }
+
+    }
+
+}
+    
+</root>

@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+
+
+<!--
+    Document   : entity2java.xml
+    Created on : 1 octobre 2010, 18:18
+    Versions   : 1.1 - importations de java.util.Date et java.util.List
+    Author     : jldeleage
+    Description:
+        Modèle de classe à générer pour chaque entité du modèle
+-->
+
+<root xmlns:ete="http://www.jldeleage.com/mda/ns/jld.html"
+        method="text" items="Entity"
+        xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+        xmlns:h="http://xmlns.jcp.org/jsf/html"
+        xmlns:f="http://xmlns.jcp.org/jsf/core"
+        xmlns="http://www.jldeleage.com/mda/ns/jld.html"
+        href="generated-sources/ete/€[ translate(package, '.', '/')]/€[ name ].java"
+        >
+<!--<ete:import href="operation.xml"/>-->
+// Code généré automatiquement par le template entity2java.xml
+package €[ package ];
+
+
+
+public class €[ name ] {
+
+    
+}  // €[ name ]
+
+</root>

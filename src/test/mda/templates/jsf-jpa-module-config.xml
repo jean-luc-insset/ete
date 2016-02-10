@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+
+<transformation-set>
+    <pas>
+        <module nom="templates/jsf/jsf-module-config.xml"/>
+        <module nom="templates/jpa/jpa-module-config.xml"/>
+    </pas>
+</transformation-set>
+
+

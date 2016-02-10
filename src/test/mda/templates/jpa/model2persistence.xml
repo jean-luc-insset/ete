@@ -1,0 +1,46 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+To change this license header, choose License Headers in Project Properties.
+To change this template file, choose Tools | Templates
+and open the template in the editor.
+-->
+
+
+<root xmlns:ete="http://www.jldeleage.com/mda/ns/jld.html"
+        method="xml"
+        encoding="ISO-8859-1"
+        xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+        xmlns:h="http://xmlns.jcp.org/jsf/html"
+        xmlns:f="http://xmlns.jcp.org/jsf/core"
+        xmlns="http://www.jldeleage.com/mda/ns/jld.html"
+        href="generated-resources/ete/webapp/WEB-INF/classes/META-INF/persistence.xml"
+        >
+<persistence version="2.0" xmlns="http://java.sun.com/xml/ns/persistence" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://java.sun.com/xml/ns/persistence http://java.sun.com/xml/ns/persistence/persistence_2_0.xsd">
+  <persistence-unit name="PersistenceUnit" transaction-type="JTA">
+    <jta-data-source>jdbc/ete</jta-data-source>
+    <ete:forEach items="Entity">
+    <class>€[ package ].€[ name ]</class>
+    </ete:forEach>
+    <exclude-unlisted-classes>true</exclude-unlisted-classes>
+    <properties>
+      <property name="javax.persistence.schema-generation.database.action" value="drop-and-create"/>
+    </properties>
+  </persistence-unit>
+  <persistence-unit name="fr.insset.jeanluc_essai-plugin-ete-webapp_war_1.0PU2" transaction-type="JTA">
+    <provider>org.eclipse.persistence.jpa.PersistenceProvider</provider>
+    <jta-data-source>jdbc/sample</jta-data-source>
+    <exclude-unlisted-classes>false</exclude-unlisted-classes>
+    <properties>
+      <property name="eclipselink.ddl-generation" value="create-tables"/>
+      <property name="eclipselink.ddl-generation.output-mode" value="both"/>
+      <property name="eclipselink.logging.level.sql" value="FINEST"/>
+      <property name="eclipselink.logging.level" value="FINE"/>
+      <property name="eclipselink.logging.parameters" value="true"/>
+      <property name="eclipselink.drop-ddl-jdbc-file-name" value="dropDatabase.sql"/>
+      <property name="eclipselink.create-ddl-jdbc-file-name" value="createDatabase.sql"/>
+    </properties>
+  </persistence-unit>
+</persistence>
+
+
+</root>

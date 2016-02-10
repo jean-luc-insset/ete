@@ -1,0 +1,63 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+To change this license header, choose License Headers in Project Properties.
+To change this template file, choose Tools | Templates
+and open the template in the editor.
+-->
+
+
+<root xmlns:ete="http://www.jldeleage.com/mda/ns/jld.html"
+        method="text"
+        encoding="ISO-8859-1"
+        xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+        xmlns:h="http://xmlns.jcp.org/jsf/html"
+        xmlns:f="http://xmlns.jcp.org/jsf/core"
+        xmlns="http://www.jldeleage.com/mda/ns/jld.html"
+        href="generated-resources/ete/webapp/WEB-INF/classes/Bundle.properties"
+        >
+PersistenceErrorOccured=A persistence error occurred.
+Previous=Previous
+Next=Next
+<ete:forEach items="Entity">
+€[name]Created=Création réussie de €[name]
+€[name]Updated=Modification réussie de €[name]
+€[name]Deleted=Suppression réussie de €[name]
+Create€[name]Title=Création de €[name]
+Create€[name]SaveLink=Enregistrer
+Create€[name]ShowAllLink=Afficher la liste de tous les éléments de type €[name]
+Create€[name]IndexLink=Index
+Create€[name]Label_id=Id:
+Create€[name]RequiredMessage_id=The Id field is required.
+Create€[name]Title_id=Id
+    <ete:forEach items="property">
+Create€[../name]Label_€[ete:initMin(name)]=€[ete:initMaj(name)] :
+Create€[../name]Title_€[ete:initMin(name)]=€[ete:initMaj(name)]
+Create€[../name]RequiredMessage_€[ete:initMin(name)]=Le champ €[ete:initMin(name)] est requis.
+    </ete:forEach>
+Edit€[name]Title=Edit €[name]
+Edit€[name]SaveLink=Enregistrer
+Edit€[name]ViewLink=Détails
+Edit€[name]ShowAllLink=Afficher tous les éléments de type €[name]
+Edit€[name]IndexLink=Index
+Edit€[name]Label_id=Id:
+Edit€[name]RequiredMessage_id=The Id field is required.
+Edit€[name]Title_id=Id
+View€[name]Title=Détails
+View€[name]DestroyLink=Supprimer
+View€[name]EditLink=Modifier
+ViewLabel€[name]=Détails
+<ete:forEach items="property | association">
+View€[../name]Label_€[name]=€[ete:initMaj(name)]
+</ete:forEach>
+List€[name]Title=Liste des éléments de type €[ete:initMin(name)]
+List€[name]CreateLink=Créer un nouvel élément de type €[name]
+List€[name]IndexLink=Index
+List€[name]ViewLink=Détails
+List€[name]EditLink=Modifier
+List€[name]DestroyLink=Supprimer
+<ete:forEach items="property | association">
+List€[../name]Title_€[name]=€[ete:initMaj(name)]
+</ete:forEach>
+</ete:forEach>
+
+</root>

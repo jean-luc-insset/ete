@@ -1,0 +1,59 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+
+<!--
+    Document   : entity2java.xml
+    Created on : 1 octobre 2010, 18:18
+    Versions   : 1.1 - importations de java.util.Date et java.util.List
+    Author     : jldeleage
+    Description:
+        Modèle de page à générer pour chaque classe "Boundary" du modèle.
+        La page les composants.
+-->
+
+<ete:root
+        xmlns:ete="http://www.jldeleage.com/mda/ns/jld.html"
+        method="xhtml"
+        items="Boundary"
+        xmlns="http://www.w3.org/1999/xhtml"
+        xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+        xmlns:h="http://xmlns.jcp.org/jsf/html"
+        xmlns:f="http://xmlns.jcp.org/jsf/core"
+        href="generated-resources/ete/webapp/€[ translate(package, '.', '/')]/€[ name ].xhtml"
+        >
+    <ete:import href="component2jsf.xml"/>
+<!--    <ete:import href="../vues_crud_simple/booleanfield.xml"/>
+    <ete:import href="../vues_crud_simple/association2selectOne.xml"/>
+    <ete:import href="../vues_crud_simple/association2selectMany.xml"/>
+    <ete:import href="../vues_crud_simple/defaultfield.xml"/>-->
+<html
+    xmlns:cc="http://xmlns.jcp.org/jsf/composite/ete"
+    >
+    <f:view>
+    <ui:composition template="/template.xhtml">
+        <ui:define name="title">
+            <h:outputText value="€[ete:initMaj(ete:decamelisation(name))]"></h:outputText>
+        </ui:define>
+
+        <ui:define name="body">
+            <!-- Il faut générer une composant JSF par composant UML de la
+                "boundary" en cours de traitement -->
+            <ete:for-each select="composition">
+                <ete:element name="cc:€[ete:initMin(name)]"/>
+            </ete:for-each>
+        </ui:define>
+
+        <ui:define name="navigation">
+            <!-- Et il faut invoquer ce composant -->
+            <ete:for-each select="association">
+                <p>
+                <h:link
+                    value="€[ete:decamelisation(name)]"
+                    outcome="/faces/€[translate(type/package, '.', '/')]/€[type/name]"/>
+                </p>
+            </ete:for-each>
+        </ui:define>
+
+    </ui:composition>
+    </f:view>
+</html>
+</ete:root>

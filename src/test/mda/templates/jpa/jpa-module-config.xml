@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+
+<transformation-set>
+    <pas>
+        <template  template="templates/jpa/entity2java.xml"/>
+        <!-- Le template suivant a besoin du template "AbstractFacade"
+        et du template entity2java
+        -->
+        <template  template="templates/jpa/entity2jpa.xml"/>
+        <template  template="templates/jpa/model2persistence.xml"/>
+        <template  template="templates/jpa/AbstractFacade.xml"/>
+    </pas>
+</transformation-set>
+
+

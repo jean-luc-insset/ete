@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+Construit un menun "select".
+Importée par les pages de création et d'édition d'entités.
+-->
+
+<root xmlns:ete="http://www.jldeleage.com/mda/ns/jld.html"
+        method="xml"
+        mode="field"
+        items="association[both-cardinalities='ManyToOne' or both-cardinalities='OneToOne']"
+        xmlns="http://www.jldeleage.com/mda/ns/jld.html"
+        xmlns:h="http://xmlns.jcp.org/jsf/html"
+        xmlns:f="http://xmlns.jcp.org/jsf/core">
+    <h:outputLabel value="#{bundle.€[../name]Label_€[name]}" for="€[ name ]" />
+    <h:selectOneMenu id="€[name]" value="#{€[ ete:initMin(../name)]Controller.selected.€[name]}"
+                     title="#{bundle.Create€[ ete:initMin(../name) ]Title_€[name]}" >
+         <f:selectItems value="#{ €[ete:initMin(type/name)]Controller.itemsAvailableSelectOne}"/>
+    </h:selectOneMenu>
+
+</root>

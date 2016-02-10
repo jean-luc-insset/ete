@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+
+<!--
+    Document   : entity2java.xml
+    Created on : 1 octobre 2010, 18:18
+    Versions   : 1.1 - importations de java.util.Date et java.util.List
+    Author     : jldeleage
+    Description:
+        Spécialisation de defaultfield.
+        Génère un 
+-->
+
+<root xmlns:ete="http://www.jldeleage.com/mda/ns/jld.html"
+        method="xhtml"
+        mode="field"
+        xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+        xmlns:h="http://xmlns.jcp.org/jsf/html"
+        xmlns:f="http://xmlns.jcp.org/jsf/core"
+        items="Entity/property[type/name='boolean']"
+        xmlns="http://www.jldeleage.com/mda/ns/jld.html"
+        >
+
+        <h:outputLabel value="#{bundle.Create€[ ../name ]Label_€[name]}" for="€[ name ]" />
+        <h:selectBooleanCheckbox id="€[name]" value="#{ €[ ../name]Controller.selected.€[name]}"
+                     title="#{bundle.Create€[ ../name ]Title_€[name]}" />
+
+</root>

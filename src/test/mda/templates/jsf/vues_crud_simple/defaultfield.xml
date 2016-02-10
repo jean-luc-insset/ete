@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+
+<!--
+    Document   : defaultfield.xml
+    Created on : 1 octobre 2010, 18:18
+    Versions   : 1.1
+    Author     : jldeleage
+    Description:
+        Produit un champ de saisie de valeur textuelle ou numérique pour chaque
+        attribut traité.
+-->
+
+<root xmlns:ete="http://www.jldeleage.com/mda/ns/jld.html"
+        method="xml"
+        mode="field"
+        items="property"
+        xmlns="http://www.jldeleage.com/mda/ns/jld.html"
+        xmlns:h="http://xmlns.jcp.org/jsf/html"
+        xmlns:f="http://xmlns.jcp.org/jsf/core">
+
+        <h:outputLabel value="#{bundle.€[ ../name ]Label_€[name]}" for="€[ name ]" />
+        <h:inputText id="€[name]" value="#{ €[ ete:initMin(../name) ]Controller.selected.€[ete:snakeToDot(name)]}"
+                     title="#{bundle.Create€[ ../name ]Title_€[name]}" />
+
+</root>
